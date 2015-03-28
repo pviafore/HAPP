@@ -8,3 +8,5 @@ For the hack-a-thon, the automation is going to take care of voice-controlling c
 with the first goal being Pandora (play, stop, next).
 
 This uses speech_recognition and pyaudio
+
+License: MIT License
