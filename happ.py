@@ -32,8 +32,8 @@ def process_command(command):
     command.command()
     global context
     if command.context:
-        context = command.context
         contextStack.append(context)
+        context = command.context
     if command == 'stop music':
         context = contextStack.pop()
     
