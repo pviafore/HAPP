@@ -1,16 +1,27 @@
 from speech_recognizer import get_spoken_phrases
 from music_player import MusicPlayer
+from weather_handler import WeatherHandler
+
 musicPlayer = MusicPlayer()
+weatherHandler = WeatherHandler()
 
 class Command():
     def __init__(self, command, context=None):
         self.command = command
         self.context= context if context else {}
+        
 musicCommands = {
                  "next song" : Command(lambda: musicPlayer.next()),
                  "stop music" : Command(lambda: musicPlayer.exit())
                 }
-rootCommands = {"start music" : Command(lambda: musicPlayer.play_music(), musicCommands ) }
+                
+weatherCommands = {
+                    "all clear" : Command(lambda: weatherHandler.exit_browser())
+                  }
+rootCommands = {
+                   "start music" : Command(lambda: musicPlayer.play_music(), musicCommands ),
+                   "tornado warning" : Command(lambda: weatherHandler.display_waff(), weatherCommands )
+               }
 
 contextStack = []
 context = rootCommands
