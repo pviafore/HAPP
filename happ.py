@@ -12,10 +12,13 @@ musicCommands = {
                 }
 rootCommands = {"start music" : Command(lambda: musicPlayer.play_music(), musicCommands ) }
 
+contextStack = []
+context = rootCommands
 
 def process_command(command):
     print "Matched command: {}".format(phrase)
     command.command()
+    global context
     if command.context:
         context = command.context
         contextStack.append(context)
@@ -23,10 +26,10 @@ def process_command(command):
         context = contextStack.pop()
     
 print "Launching HAPP, talk to get going!"
-contextStack = []
-context = rootCommands
+
 for phrase in get_spoken_phrases():
     print phrase
     for expectedPhrase, command in context.items():
         if phrase == expectedPhrase:
             process_command(command)
+            break
