@@ -9,12 +9,12 @@ class Command():
     def __init__(self, command, context=None):
         self.command = command
         self.context= context if context else {}
-        
+
 musicCommands = {
                  "next song" : Command(lambda: musicPlayer.next()),
                  "stop music" : Command(lambda: musicPlayer.exit())
                 }
-                
+
 weatherCommands = {
                     "all clear" : Command(lambda: weatherHandler.exit_browser())
                   }
@@ -35,8 +35,9 @@ def process_command(command):
         contextStack.append(context)
         context = command.context
     if command == 'stop music':
-        context = contextStack.pop()
-    
+        context = contextStack[-1]
+        contextStack.pop()
+
 print "Launching HAPP, talk to get going!"
 
 for phrase in get_spoken_phrases():
