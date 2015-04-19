@@ -21,7 +21,7 @@ weatherCommands = {
 rootCommands = {
                    "start music" : Command(lambda: musicPlayer.play_music(), musicCommands ),
                    "tornado warning" : Command(lambda: weatherHandler.display_waff(), weatherCommands ),
-                   "whats the temp" : Command(lambda: weatherHandler.speak_current_temperature())
+                   "what's the temp" : Command(lambda: weatherHandler.speak_current_temperature())
                }
 
 contextStack = []
