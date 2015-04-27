@@ -1,48 +1,54 @@
-from speech_recognizer import get_spoken_phrases
+from speech_recognizer import load_speech_recognizer
 from music_player import MusicPlayer
 from weather_handler import WeatherHandler
-
+from command_queue import *
+from text_input import load_text_input
 musicPlayer = MusicPlayer()
 weatherHandler = WeatherHandler()
 
-class Command():
-    def __init__(self, command, context=None):
-        self.command = command
+class Action():
+    def __init__(self, action, context=None):
+        self.action = action
         self.context= context if context else {}
 
+    def perform(self):
+        self.action()
+
+
 musicCommands = {
-                 "next song" : Command(lambda: musicPlayer.next()),
-                 "stop music" : Command(lambda: musicPlayer.exit())
+                 "next song" : Action(lambda: musicPlayer.next()),
+                 "stop music" : Action(lambda: musicPlayer.exit())
                 }
 
 weatherCommands = {
-                    "all clear" : Command(lambda: weatherHandler.exit_browser())
+                    "all clear" : Action(lambda: weatherHandler.exit_browser())
                   }
 rootCommands = {
-                   "start music" : Command(lambda: musicPlayer.play_music(), musicCommands ),
-                   "tornado warning" : Command(lambda: weatherHandler.display_waff(), weatherCommands ),
-                   "what's the temp" : Command(lambda: weatherHandler.speak_current_temperature())
+                   "start music" : Action(lambda: musicPlayer.play_music(), musicCommands ),
+                   "tornado warning" : Action(lambda: weatherHandler.display_waff(), weatherCommands ),
+                   "what's the temp" : Action(lambda: weatherHandler.speak_current_temperature())
                }
 
 contextStack = []
 context = rootCommands
 
-def process_command(command):
-    print "Matched command: {}".format(phrase)
-    command.command()
+def process_action(action):
+    action.perform()
     global context
-    if command.context:
+    if action.context:
         contextStack.append(context)
-        context = command.context
-    if command == 'stop music':
+        context = action.context
+    if action == 'stop music':
         context = contextStack[-1]
         contextStack.pop()
 
 print "Launching HAPP, talk to get going!"
-
-for phrase in get_spoken_phrases():
-    print phrase
-    for expectedPhrase, command in context.items():
-        if phrase == expectedPhrase:
-            process_command(command)
+#load_speech_recognizer(get_command_queue())
+load_text_input(get_command_queue())
+for command in get_input_commands():
+    print "Recognized: " + command
+    for expectedCommand, action in context.items():
+        if command == expectedCommand:
+            print "Matched command: {}".format(command)
+            process_action(action)
             break

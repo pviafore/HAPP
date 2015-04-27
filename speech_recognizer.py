@@ -1,6 +1,11 @@
 import pyaudio
 import speech_recognition as sr
- 
+
+
+def load_speech_recognizer(queue):
+    for phrase in get_spoken_phrases():
+        queue.put(phrase)
+
 def get_spoken_phrases():
     r = sr.Recognizer()
     r.pause_threshold = 0.5
@@ -13,4 +18,3 @@ def get_spoken_phrases():
             yield r.recognize(audio)
         except LookupError:
             pass
-        
