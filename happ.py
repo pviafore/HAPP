@@ -3,6 +3,8 @@ from music_player import MusicPlayer
 from weather_handler import WeatherHandler
 from command_queue import *
 from text_input import load_text_input
+from configuration_options import ConfigOptions
+import sys
 musicPlayer = MusicPlayer()
 weatherHandler = WeatherHandler()
 
@@ -38,17 +40,26 @@ def process_action(action):
     if action.context:
         contextStack.append(context)
         context = action.context
-    if action == 'stop music':
-        context = contextStack[-1]
-        contextStack.pop()
 
-print "Launching HAPP, talk to get going!"
-#load_speech_recognizer(get_command_queue())
-load_text_input(get_command_queue())
-for command in get_input_commands():
-    print "Recognized: " + command
-    for expectedCommand, action in context.items():
-        if command == expectedCommand:
-            print "Matched command: {}".format(command)
-            process_action(action)
+def main_run_loop(options):
+    print "Launching HAPP, talk to get going!"
+    global context
+    #load_speech_recognizer(get_command_queue())
+    load_text_input(get_command_queue())
+    for command in get_input_commands():
+        print "Recognized: " + command
+        if command == "exit":
             break
+        for expectedCommand, action in context.items():
+            if command == 'stop music':
+                context = contextStack[-1]
+                contextStack.pop()
+            if command == expectedCommand:
+                print "Matched command: {}".format(command)
+                process_action(action)
+                break
+
+
+if __name__ == "__main__":
+    config_file_name = sys.argv[1] if len(sys.argv) > 1 else "default.ini"
+    main_run_loop(ConfigOptions(config_file_name))
