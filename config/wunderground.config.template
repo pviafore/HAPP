@@ -1,4 +1,5 @@
 [Weather Underground]
+#You will need to get an API key from Weather Underground for this to work (free is okay)
 key=<put your key here>
 state=<put two digit state code here>
 city=<put your city name here>

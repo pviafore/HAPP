@@ -7,3 +7,4 @@ def load_text_input(queue):
     thread = Thread(target=get_user_input)
     thread.daemon = True
     thread.start()
+    return thread

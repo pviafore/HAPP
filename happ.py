@@ -28,7 +28,7 @@ weatherCommands = {
 rootCommands = {
                    "start music" : Action(lambda: musicPlayer.play_music(), musicCommands ),
                    "tornado warning" : Action(lambda: weatherHandler.display_waff(), weatherCommands ),
-                   "what's the temp" : Action(lambda: weatherHandler.speak_current_temperature())
+  "what's the temp" : Action(lambda: weatherHandler.speak_current_temperature())
                }
 
 contextStack = []
@@ -44,7 +44,7 @@ def process_action(action):
 def main_run_loop(options):
     print "Launching HAPP, talk to get going!"
     global context
-    #load_speech_recognizer(get_command_queue())
+    load_speech_recognizer(get_command_queue())
     load_text_input(get_command_queue())
     for command in get_input_commands():
         print "Recognized: " + command
