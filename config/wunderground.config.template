@@ -1,0 +1,4 @@
+[Weather Underground]
+key=<put your key here>
+state=<put two digit state code here>
+city=<put your city name here>
